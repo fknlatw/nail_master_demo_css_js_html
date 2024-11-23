@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="./favicon.svg" type="image/x-icon">
+    <title>NAIL_MASTER_DEMO</title>
+    <script defer type="module" src="./app.js"></script>
+    <link rel="stylesheet" href="./main.css">
+</head>
+<body>
+    <div class="app">
+        <header class="header">
+            <div class="container header_container">
+                <ul class="header_list">
+                    <li><a href="#recordsTable">Список</a></li>
+                    <li><a href="#addRecord">Добавить запись</a></li>
+                </ul>
+            </div>
+        </header>
+
+        <main class="main">
+            <div class="container main_container">
+                
+                <section id="recordsTable">
+                    <h2>Записи:</h2>
+
+                    <table border="1" class="records_table">
+                        <thead>
+                            <tr>
+                                <td>Дата/Время</td>
+                                <td>Имя/Телефон</td>
+                                <td>Тип(ы)</td>
+                                <td>Статус</td>
+                            </tr>
+                        </thead>
+
+                        <tbody class="add_record_table_body">
+                            
+                        </tbody>
+                    </table>
+                </section>
+
+                <section id="addRecord">
+                    <form class="add_record">
+                        <h2>Добваить запись:</h2>
+                    
+                        <label for="date">Дата и время</label>
+                        <input required name="datetime" min="" class="add_record_date_input" type="date">
+                    
+                        <label for="type">Тип</label>
+                        <select name="type" class="add_record_type_input">
+                            <option value="pedicure">Педикюр</option>
+                            <option value="manicure">Маникюр</option>
+                        </select>
+
+                        <label for="name">Имя</label>
+                        <input 
+                            required
+                            name="name" 
+                            placeholder="Имя клиента..."
+                            type="text"
+                        >
+
+                        <label for="phone">Телефон</label>
+                        <input 
+                            required
+                            name="phone" 
+                            placeholder="Телефон клиента..."
+                            type="text"
+                        >
+
+                        <button type="submit">
+                            Добавить запись
+                        </button>
+                    </form>
+                </section>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

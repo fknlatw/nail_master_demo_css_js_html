@@ -1,0 +1,93 @@
+/*MAIN STYLES*/
+@import url('https://fonts.googleapis.com/css2?family=Anonymous+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+:root{
+    --green-color: #60C51F; 
+    --white-color: #DDE1E7;
+    --violet-color: #71557B;
+    --red-color: #ff0303;
+}
+
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "Anonymous Pro", monospace;
+    color: inherit;
+    list-style: none;
+    /* border: 1px solid #000; */
+}
+button{
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+    border-bottom:5px solid  var(--violet-color);
+}
+
+input, select{
+    border: none;
+    border-bottom: 1px solid var(--violet-color);
+}
+
+td{
+    padding: 0.25rem;
+}
+
+body{
+    background-color: var(--white-color);
+}
+
+.container{
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/*HEADER*/
+.header{
+    background-color: var(--violet-color);
+    color: var(--white-color);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+section{
+    padding-top: 3rem;
+}
+
+.header_container{
+    padding: 1rem 1.25rem 1rem 0.25rem;
+    border-left: 1rem solid var(--green-color);
+}
+.header_list{
+    display: flex;
+    justify-content: space-between;
+}
+/*MAIN*/
+.main_container{
+    padding: 1rem;
+    padding-top: 0;
+}
+
+.add_record{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.records_table{
+    width: 100%;
+}
+
+
+.edit_button, .delete_button{
+    border-bottom: 5px solid var(--green-color);
+}
+
+.delete_button{
+    border-bottom: 5px solid var(--red-color)
+}
+
+
+
