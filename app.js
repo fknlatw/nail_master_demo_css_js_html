@@ -2,9 +2,10 @@ const addRecordForm = document.querySelector(".add_record");
 const addRecordTableBody = document.querySelector(".add_record_table_body");
 const addRecordDateInput = document.querySelector(".add_record_date_input");
 const addRecordId = document.querySelector(".add_record_id");
+const statusWrapper = document.querySelector(".status_wrapper");
 addRecordDateInput.min = new Date().toISOString().split("T")[0];
 
-let records =[
+let records = [
    
 ];
 
@@ -18,7 +19,7 @@ const render = () => {
         return `<tr class="record_item" id="${record.id}">
             <td>${record.date}</td>
             <td>${record.name}(${record.phone})</td>
-            <td>${record.type}</td>
+            <td>${record.type === "manicure"? "Маникюр" : "Педикюр"}</td>
             <td>
                 ${record.status ? "Завершен" : "В процессе"}
                 <button class="edit_button" >Изменить</button>
@@ -39,27 +40,28 @@ const editDeleteItem = (e, id) => {
     if(e.target.classList.contains("edit_button")){
         const currentItem = records.find(item => item.id === Number(id));
         
+        statusWrapper.style.display = "block";
         addRecordForm[0].value = currentItem.date;
         addRecordForm[1].value = currentItem.type;
         addRecordForm[2].value = currentItem.name;
         addRecordForm[3].value = currentItem.phone;
-        addRecordForm[4].innerHTML = "Изменить";
+        addRecordForm[4].value = currentItem.status;
+        addRecordForm[5].innerHTML = "Изменить";
         addRecordId.innerHTML = id;
-        console.log(currentItem.date)
+        document.querySelectorAll(".delete_button").forEach(button => button.disabled = true);
     }
 
     if(e.target.classList.contains("delete_button")){
-        console.log("delete")
+        records = records.filter(item => item.id !== Number(id));
 
+        render();
     }
 }
 
 addRecordForm.addEventListener("submit", (e) => {
     e.preventDefault();
 
-    
-
-    if(e.target[4].innerHTML === "Изменить"){
+    if(e.target[5].innerHTML === "Изменить"){
         const addRecordData = new FormData(addRecordForm);
         const id = addRecordId.innerHTML;
         
@@ -71,22 +73,19 @@ addRecordForm.addEventListener("submit", (e) => {
                     name: addRecordData.get("name"),
                     phone: addRecordData.get("phone"),
                     type: addRecordData.get("type"),
-                    status: item.status
+                    status: JSON.parse(addRecordData.get("status"))
                 }
             }
             return item;
         });
-
-        e.target[4].innerHTML = "Добавить запись";
-
-        addRecordId.innerText = "";
        
+        e.target[5].innerHTML = "Добавить запись";
+        addRecordId.innerText = "";
+        statusWrapper.style.display = "none";
         render();
-
-
         return;
     }
-    if(e.target[4].innerHTML === "Добавить запись"){
+    if(e.target[5].innerHTML === "Добавить запись"){
         const addRecordData = new FormData(addRecordForm);
         records.push({
             id: generateId(),
@@ -94,16 +93,10 @@ addRecordForm.addEventListener("submit", (e) => {
             name: addRecordData.get("name"),
             phone: addRecordData.get("phone"),
             type: addRecordData.get("type"),
-            status: true
+            status: false
         });
-
-        // e.target[4].innerHTML = "Изменить";
 
         render();
     }
-    
-
-    
-    
 });
 

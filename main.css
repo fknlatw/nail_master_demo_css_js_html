@@ -90,5 +90,8 @@ section{
     border-bottom: 5px solid var(--red-color)
 }
 
+.status_wrapper{
+    display: none;
+}
 
 
