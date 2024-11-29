@@ -18,9 +18,7 @@ addRecordDateInput.addEventListener("change", () => {
     addRecordDateInput.value =`${addRecordDateInput.value.split("T")[0]}T${addRecordDateInput.value.split("T")[1].split(":")[0]}:00`;
 });
 
-let records = [
-   
-];
+let records = JSON.parse(localStorage.getItem("records")) || [];
 
 filtersToggleButton.addEventListener("click", () => {
     filters.classList.add("filters_active");
@@ -107,7 +105,7 @@ const editDeleteItem = (e, id) => {
 
     if(e.target.classList.contains("delete_button")){
         records = records.filter(item => item.id !== Number(id));
-
+        localStorage.setItem("records", JSON.stringify(records));
         render(records);
     }
 }
@@ -136,6 +134,7 @@ addRecordForm.addEventListener("submit", (e) => {
         e.target[5].innerHTML = "Добавить запись";
         addRecordId.innerText = "";
         statusWrapper.style.display = "none";
+        localStorage.setItem("records", JSON.stringify(records));
         render(records);
         document.getElementById(`${id}`).scrollIntoView({behaviour: "smooth", block: "end"});
         return;
@@ -151,7 +150,10 @@ addRecordForm.addEventListener("submit", (e) => {
             status: false
         });
 
+        localStorage.setItem("records", JSON.stringify(records));
         render(records);
     }
 });
+
+render(records)
 
