@@ -7,7 +7,9 @@
     --violet-color: #71557B;
     --red-color: #ff0303;
 }
-
+i{
+    display: block;
+}
 *{
     padding: 0;
     margin: 0;
@@ -17,6 +19,7 @@
     list-style: none;
     /* border: 1px solid #000; */
 }
+
 button{
     border: none;
     cursor: pointer;
@@ -36,6 +39,7 @@ td{
 
 body{
     background-color: var(--white-color);
+    /* scroll-margin: -3rem 0 0 0; */
 }
 
 .container{
@@ -48,6 +52,7 @@ body{
     background-color: var(--violet-color);
     color: var(--white-color);
     position: fixed;
+    z-index: 2;
     top: 0;
     left: 0;
     right: 0;
@@ -60,6 +65,7 @@ section{
 .header_container{
     padding: 1rem 1.25rem 1rem 0.25rem;
     border-left: 1rem solid var(--green-color);
+    height: 3rem;
 }
 .header_list{
     display: flex;
@@ -79,8 +85,29 @@ section{
 
 .records_table{
     width: 100%;
+    margin-top: 1rem;
+}
+.records_title{
+    display: flex;
+    justify-content: space-between;
+}
+.filters_toggle_button, .filters_close_button, .submit_filters_button{
+    font-size: 0.75rem;
+    padding: 0 1rem;
 }
 
+.filters_toggle_button i {
+    margin: auto;
+}
+.filters{
+    height: 0;
+    transition: height 0.3s;
+    overflow: hidden;
+}
+
+.filters_active{
+    height: auto;
+}
 
 .edit_button, .delete_button{
     border-bottom: 5px solid var(--green-color);

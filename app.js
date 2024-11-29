@@ -3,21 +3,71 @@ const addRecordTableBody = document.querySelector(".add_record_table_body");
 const addRecordDateInput = document.querySelector(".add_record_date_input");
 const addRecordId = document.querySelector(".add_record_id");
 const statusWrapper = document.querySelector(".status_wrapper");
-addRecordDateInput.min = new Date().toISOString().split("T")[0];
+const filters = document.querySelector(".filters");
+const filtersToggleButton = document.querySelector(".filters_toggle_button");
+const filtersCloseButton = document.querySelector(".filters_close_button");
+const filtersTime = document.getElementById("filtersTime");
+const filtersDate = document.querySelector(".filters input[type=date]")
+
+
+addRecordDateInput.min = new Date().toISOString().split("T")[0] + "T00:00";
+addRecordDateInput.value = new Date().toISOString().split("T")[0] + "T12:00";
+filtersDate.value = new Date().toISOString().split("T")[0];
+
+addRecordDateInput.addEventListener("change", () => {
+    addRecordDateInput.value =`${addRecordDateInput.value.split("T")[0]}T${addRecordDateInput.value.split("T")[1].split(":")[0]}:00`;
+});
 
 let records = [
    
 ];
 
+filtersToggleButton.addEventListener("click", () => {
+    filters.classList.add("filters_active");
+});
+
+filtersCloseButton.addEventListener("click", (e) => {
+    e.preventDefault();
+    filters.classList.remove("filters_active");
+    render(records);
+});
+
+filters.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const filtersData = new FormData(filters);
+
+    const filteredList = records.filter(item => {
+        const itemDate = item.date.split("T")[0];
+        if(filtersData.get("date") === itemDate){
+            if(filtersData.get("type") === item.type ){
+                if (filtersData.get("status") === "") {
+                    return item
+                } else if (JSON.parse(filtersData.get("status")) === item.status) {
+                    return item
+                }
+            } else if(filtersData.get("type") === ""){
+                if(filtersData.get("status") === ""){
+                    return item
+                } else if(JSON.parse(filtersData.get("status")) === item.status) {
+                    return item
+                }
+            }
+        } 
+    });
+
+    render(filteredList);
+    console.log(filteredList)
+})
 
 const generateId = () => {
     return Number(Math.random().toString().split(".")[1])
 }
 
-const render = () => {
-    addRecordTableBody.innerHTML = records.map(record => {
+const render = (array) => {
+    addRecordTableBody.innerHTML = array.map(record => {
         return `<tr class="record_item" id="${record.id}">
-            <td>${record.date}</td>
+            <td>${record.date.split("T").join(",")}</td>
             <td>${record.name}(${record.phone})</td>
             <td>${record.type === "manicure"? "Маникюр" : "Педикюр"}</td>
             <td>
@@ -34,6 +84,8 @@ const render = () => {
     recordItems.forEach(item => {
         item.addEventListener("click", (e) => editDeleteItem(e, item.id));
     });
+
+    
 }
 
 const editDeleteItem = (e, id) => {
@@ -49,12 +101,14 @@ const editDeleteItem = (e, id) => {
         addRecordForm[5].innerHTML = "Изменить";
         addRecordId.innerHTML = id;
         document.querySelectorAll(".delete_button").forEach(button => button.disabled = true);
+
+        addRecordForm.scrollIntoView();
     }
 
     if(e.target.classList.contains("delete_button")){
         records = records.filter(item => item.id !== Number(id));
 
-        render();
+        render(records);
     }
 }
 
@@ -82,7 +136,8 @@ addRecordForm.addEventListener("submit", (e) => {
         e.target[5].innerHTML = "Добавить запись";
         addRecordId.innerText = "";
         statusWrapper.style.display = "none";
-        render();
+        render(records);
+        document.getElementById(`${id}`).scrollIntoView({behaviour: "smooth", block: "end"});
         return;
     }
     if(e.target[5].innerHTML === "Добавить запись"){
@@ -96,7 +151,7 @@ addRecordForm.addEventListener("submit", (e) => {
             status: false
         });
 
-        render();
+        render(records);
     }
 });
 

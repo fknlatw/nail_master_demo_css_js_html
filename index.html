@@ -6,6 +6,9 @@
     <link rel="shortcut icon" href="./favicon.svg" type="image/x-icon">
     <title>NAIL_MASTER_DEMO</title>
     <script defer type="module" src="./app.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
+        integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="./main.css">
 </head>
 <body>
@@ -23,7 +26,40 @@
             <div class="container main_container">
                 
                 <section id="recordsTable">
-                    <h2>Записи:</h2>
+                    <form class="filters">
+                        <h2>Фильтры:</h2>
+                        
+                        <label for="date">Дата:</label>
+                        <input required name="date" type="date">
+
+
+                        <label for="type">Тип:</label>
+                        <select name="type">
+                            <option value=""></option>
+                            <option value="pedicure">Педикюр</option>
+                            <option value="manicure">Маникюр</option>
+                        </select>
+
+                        <label for="status">Статус:</label>
+                        <select name="status" id="">
+                            <option value=""></option>
+                            <option value="false">В процессе</option>
+                            <option value="true">Завершен</option>
+                        </select>
+                        
+                        <button type="submit" class="submit_filters_button">Применить</button>
+                        <button class="filters_close_button"><i class="fa-solid fa-xmark"></i></button>
+                    </form>
+
+                    <div class="records_title">
+                        <h2>Записи:</h2>
+
+                        <button class="filters_toggle_button">
+                            <i class="fa-solid fa-filter"></i>
+                        </button>
+                    </div>
+
+                    
 
                     <table border="1" class="records_table">
                         <thead>
@@ -45,8 +81,8 @@
                     <form class="add_record">
                         <h2>Добваить запись:</h2>
                     
-                        <label for="date">Дата и время</label>
-                        <input required name="datetime" min="" class="add_record_date_input" type="date">
+                        <label for="datetime">Дата и время</label>
+                        <input required name="datetime" class="add_record_date_input" type="datetime-local">
                     
                         <label for="type">Тип</label>
                         <select name="type" class="add_record_type_input">
