@@ -82,10 +82,21 @@ section{
     flex-direction: column;
     gap: 0.5rem;
 }
-
+.records_table_container{
+    max-height: 600px;
+    overflow: auto;
+    position: relative;
+}
 .records_table{
     width: 100%;
     margin-top: 1rem;
+    
+}
+.records_table thead{
+    position: sticky;
+    top: 0;
+    left: 0;
+    background-color: var(--white-color);
 }
 .records_title{
     display: flex;
