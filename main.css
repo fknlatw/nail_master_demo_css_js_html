@@ -35,6 +35,7 @@ input, select{
 
 td{
     padding: 0.25rem;
+    border: 1px solid var(--violet-color)
 }
 
 body{
@@ -83,19 +84,21 @@ section{
     gap: 0.5rem;
 }
 .records_table_container{
-    max-height: 600px;
+    margin-top: 1rem;
+    max-height: 80vh;
     overflow: auto;
     position: relative;
 }
 .records_table{
     width: 100%;
-    margin-top: 1rem;
+    padding: 1px;
     
 }
 .records_table thead{
     position: sticky;
     top: 0;
     left: 0;
+    padding-top: 10px;
     background-color: var(--white-color);
 }
 .records_title{
