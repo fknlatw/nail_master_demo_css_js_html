@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="./favicon.svg" type="image/x-icon">
-    <title>NAIL_MASTER_DEMO</title>
+    <title>NAIL_MASTER_VER_1</title>
     <script defer type="module" src="./app.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
         integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ=="
@@ -18,7 +18,17 @@
                 <ul class="header_list">
                     <li><a href="#recordsTable">Список</a></li>
                     <li><a href="#addRecord">Добавить запись</a></li>
+                    
+                    <form class="search_form">
+                        <input name="search" class="search_form_input" type="text">
+                        <button type="submit"> 
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+
+                    </form>
+                    
                 </ul>
+                
             </div>
         </header>
 
@@ -67,7 +77,7 @@
                                 <tr>
                                     <td>Дата/Время</td>
                                     <td>Имя/Телефон</td>
-                                    <td>Тип(ы)</td>
+                                    <td>Тип</td>
                                     <td>Статус</td>
                                 </tr>
                             </thead>
@@ -119,11 +129,35 @@
 
                         <p class="add_record_id"></p>
 
-
                     </form>
                 </section>
             </div>
         </main>
+
+        <footer class="footer">
+            <div class="container footer_container">
+                <div class="footer_info">
+                    <h3 class="footer_title">Nail Master Demo <span>v 0.01</span></h3>
+                    <p>FLATW</p>
+                    <span class="year"></span>
+                </div>
+
+                <ul class="stack">
+                    <li><p>Сделано с помощью:</p></li>
+                    <li>
+                        <img class="stack_html" src="./img/HTML.png" alt="HTML">
+                    </li>
+                    <li>
+                        <img class="stack_css" src="./img/CSS.png" alt="CSS">
+                    </li>
+                    <li>
+                        <img class="stack_js" src="./img/JS.png" alt="JS">
+                    </li>
+                </ul>
+
+                
+            </div>
+        </footer>
     </div>
 </body>
 </html>
