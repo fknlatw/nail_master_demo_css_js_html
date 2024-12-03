@@ -1,4 +1,5 @@
 const addRecordForm = document.querySelector(".add_record");
+const searchForm = document.querySelector(".search_form");
 const addRecordTableBody = document.querySelector(".add_record_table_body");
 const addRecordDateInput = document.querySelector(".add_record_date_input");
 const addRecordId = document.querySelector(".add_record_id");
@@ -8,17 +9,16 @@ const filtersToggleButton = document.querySelector(".filters_toggle_button");
 const filtersCloseButton = document.querySelector(".filters_close_button");
 const filtersTime = document.getElementById("filtersTime");
 const filtersDate = document.querySelector(".filters input[type=date]")
+const year = document.querySelector(".year");
 
-
-addRecordDateInput.min = new Date().toISOString().split("T")[0] + "T00:00";
-addRecordDateInput.value = new Date().toISOString().split("T")[0] + "T12:00";
+year.innerHTML = `${new Date().getFullYear()}г.`;
 filtersDate.value = new Date().toISOString().split("T")[0];
+let records = JSON.parse(localStorage.getItem("records")) || [];
 
+addRecordDateInput.value = new Date().toISOString().split("T")[0] + "T12:00";
 addRecordDateInput.addEventListener("change", () => {
     addRecordDateInput.value =`${addRecordDateInput.value.split("T")[0]}T${addRecordDateInput.value.split("T")[1].split(":")[0]}:00`;
 });
-
-let records = JSON.parse(localStorage.getItem("records")) || [];
 
 filtersToggleButton.addEventListener("click", () => {
     filters.classList.add("filters_active");
@@ -30,39 +30,98 @@ filtersCloseButton.addEventListener("click", (e) => {
     render(records);
 });
 
-filters.addEventListener("submit", (e) => {
-    e.preventDefault();
+const submitFilters = () => {
 
     const filtersData = new FormData(filters);
 
+    if (!filtersData.get("date")){
+        render(records);
+        return;
+    }
+
     const filteredList = records.filter(item => {
         const itemDate = item.date.split("T")[0];
-        if(filtersData.get("date") === itemDate){
-            if(filtersData.get("type") === item.type ){
+        if (filtersData.get("date") === itemDate) {
+            if (filtersData.get("type") === item.type) {
                 if (filtersData.get("status") === "") {
                     return item
                 } else if (JSON.parse(filtersData.get("status")) === item.status) {
                     return item
                 }
-            } else if(filtersData.get("type") === ""){
-                if(filtersData.get("status") === ""){
+            } else if (filtersData.get("type") === "") {
+                if (filtersData.get("status") === "") {
                     return item
-                } else if(JSON.parse(filtersData.get("status")) === item.status) {
+                } else if (JSON.parse(filtersData.get("status")) === item.status) {
                     return item
                 }
             }
-        } 
+        }
     });
 
     render(filteredList);
-    console.log(filteredList)
-})
+}
+
+filters.addEventListener("submit",e => {
+    e.preventDefault();
+    submitFilters()
+});
+
+
+searchForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    
+    const searchData = new FormData(searchForm).get("search").toLowerCase();
+    searchForm[0].value = "";
+
+    const tableItems = Array.from(addRecordTableBody.querySelectorAll("tr"));
+
+    if(!searchData){
+        if(filters.classList.contains("filters_active")){
+            submitFilters();
+        } else {
+            render(records);
+        }
+
+        return;
+    }
+    
+    const searchResult = [];
+    tableItems.filter(item=>{
+        const name = item.childNodes[3].innerHTML.split("(")[0];
+        const phone = item.childNodes[3].innerHTML.split("(")[1].slice(0, -1);
+        const type = item.childNodes[5].innerHTML === "Педикюр"? "pedicure" : "manicure";
+        const status = item.childNodes[7].innerHTML.split("<")[0].trim() === "Завершен"? true : false;
+        const date = item.childNodes[1].innerHTML.replace(",", "T");
+        
+        const obj = {
+            id: Number(item.id),
+            date: date,
+            name: name,
+            phone: phone,
+            type: type,
+            status: status
+        }
+
+        if(name.toLowerCase().includes(searchData)){
+            searchResult.push(obj);
+        } 
+        else if(phone.includes(searchData)){
+            searchResult.push(obj);
+        } 
+    });
+
+    render(searchResult);
+});
 
 const generateId = () => {
     return Number(Math.random().toString().split(".")[1])
 }
 
 const render = (array) => {
+    array.sort((a, b) => {
+        return new Date(a.date) > new Date(b.date);
+    }).reverse();
+
     addRecordTableBody.innerHTML = array.map(record => {
         return `<tr class="record_item" id="${record.id}">
             <td>${record.date.split("T").join(",")}</td>
@@ -85,6 +144,8 @@ const render = (array) => {
 
     
 }
+
+render(records);
 
 const editDeleteItem = (e, id) => {
     if(e.target.classList.contains("edit_button")){
@@ -135,8 +196,13 @@ addRecordForm.addEventListener("submit", (e) => {
         addRecordId.innerText = "";
         statusWrapper.style.display = "none";
         localStorage.setItem("records", JSON.stringify(records));
-        render(records);
-        document.getElementById(`${id}`).scrollIntoView({behaviour: "smooth", block: "end"});
+        if (filters.classList.contains("filters_active")){
+            submitFilters()
+        } else{
+            render(records);
+        }
+
+        document.getElementById(`${id}`)?.scrollIntoView({behaviour: "smooth", block: "end"});
         return;
     }
     if(e.target[5].innerHTML === "Добавить запись"){
@@ -155,5 +221,4 @@ addRecordForm.addEventListener("submit", (e) => {
     }
 });
 
-render(records)
 
